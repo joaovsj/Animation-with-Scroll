@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo </title>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+
+        div{
+            width: 100%;
+            height: 250px;
+            background-color: yellow;
+            transform: translateX(-100%);
+            transition: all 1s;
+            opacity: 0;
+            
+        }
+
+        div:not(:first-child){
+            margin-top: 10px;
+        }
+
+        .animar{
+            transform: translateX(0%);
+            opacity: 1;
+        }
+
+        .valores{
+            opacity: 1;
+            position: fixed;
+            overflow-wrap: break-word;
+            background-color: red;
+            padding: 10px;
+            width: 120px;
+            height: 50px;
+            right: 0;
+            z-index: 1;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="valores">
+        POSIÇÃO:
+    </div>
+    <div>DIV 1</div>
+    <div>DIV 1</div>
+    <div>DIV 1</div>
+    <div>DIV 1</div>
+    <div>DIV 1</div>
+    <div>DIV 1</div>
+    <div>DIV 1</div>
+    <div>DIV 1</div>
+    <div>DIV 1</div>
+
+</body>
+
+<script>
+
+    function atualizar(e = undefined){
+        //div que informa a altura do scroll e a altura da janela
+        document.querySelectorAll("div")[0].innerHTML = window.scrollY.toFixed(1) + " / "+ window.innerHeight.toFixed(1);
+        //selecionando todaas as divs com a excessão da div valores.
+        const divs = document.querySelectorAll("div:not(.valores)");
+        divs.forEach((div)=>{
+            div.innerHTML = div.offsetTop; // offsetTop-> pega a altura do elemento em relação ao topo
+            if(div.offsetTop < window.scrollY+window.innerHeight
+            &&
+            window.scrollY < div.offsetTop + (div.offsetHeight*0.08) // 8%
+            ){
+                div.classList.add("animar");
+            }else{
+                div.classList.remove("animar"); 
+            }
+            
+            
+        })
+    }
+
+    window.addEventListener("scroll", atualizar); // scroll da página
+    window.addEventListener("resize", atualizar); //janela muda de tamanho
+
+    atualizar();
+    
+
+    function gerarAltura(){
+        const divs = document.querySelectorAll("div:not(.valores)");
+        divs.forEach((div)=>{
+            console.log(div);
+            div.style.height = Math.floor((Math.random() * 700)) +  200 + "px";
+        });
+
+    }
+
+    gerarAltura();
+    /*
+       
+        if(div.offsetTop < window.scrollY+window.innerHeight)
+    
+        -> se a altura da div em relação ao topo for menor que o scroll no eixo Y mais a altura da janela, significa que ela está visivel na tela do usuário. Se a altura do elemento em relaçao ao topo for maior qua altura do SCrollY e a altura da janela, é por que este mesmo elemento está lá embaixo.
+    
+        &&
+            window.scrollY < div.offsetTop + (div.offsetHeight*0.8) // 8%)
+        
+        -> se o scrollY é menor que à altura do elemento em relação ao topo, é por que ele já está desaparecendo da tela, par que fique um efeito legal e ele não desparefce de uma vez somamos mais uma porcentagem da altura do próprio elemento
+
+        -> à partir do momento que o SCrollY fica maior que altura do elemento em relaçao ao topo, isso significa qeu ele já está desaparecendo.
+
+        {
+                div.classList.add("animar");
+        }else{
+                div.classList.remove("animar"); 
+        }
+
+
+    
+    */
+
+</script>
+</html>
